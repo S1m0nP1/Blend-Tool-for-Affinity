@@ -1,3 +1,4 @@
+<img width="2581" height="3589" alt="strange fruit" src="https://github.com/user-attachments/assets/1dd46555-8757-4c01-b74e-4da6b857ac27" />
 # Blend-Tool-for-Affinity
 
 Javascript Blend Tool for use in Affinity
