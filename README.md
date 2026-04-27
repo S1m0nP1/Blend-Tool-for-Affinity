@@ -1,6 +1,6 @@
 # Blend Tool v16.6.3 — User Guide
 
-**Platform:** Affinity Designer (Publisher / Photo with Designer persona)
+**Platform:** Affinity V3.2
 **Author:** © S1m0np1
 
 The Blend Tool is a script that generates smooth morphing transitions between two shapes or groups — interpolating their position, form, fill, stroke, and scale across a configurable number of intermediate steps. Results can optionally follow a custom path and be edited non-destructively after creation.
