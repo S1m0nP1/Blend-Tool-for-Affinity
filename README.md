@@ -1,5 +1,15 @@
 # Blend Tool v16.6.3 — User Guide
 
+## Support This Project
+
+If this project helped you, you can support it:
+
+- One-time tip: [Buy Me a Coffee](https://www.buymeacoffee.com/S1m0nP)
+- Monthly support: [GitHub Sponsors](https://github.com/sponsors/S1m0nP1)
+
+This tool stays free and open source. Support is optional.
+
+
 **Platform:** Affinity V3.2
 **Author:** © S1m0np1
 
