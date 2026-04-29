@@ -20,7 +20,7 @@
         color: var(--text);
       }
       .wrap {
-        max-width: 860px;
+        max-width: 980px;
         margin: 48px auto;
         padding: 0 20px;
       }
@@ -31,6 +31,7 @@
         box-shadow: 0 12px 30px rgba(17, 24, 39, 0.08);
       }
       h1 { margin-top: 0; font-size: 2rem; }
+      h2 { margin: 36px 0 14px; font-size: 1.4rem; }
       p { line-height: 1.65; color: var(--muted); }
       .actions {
         display: flex;
@@ -53,12 +54,36 @@
         border: 1px solid #d1d5db;
         color: var(--text);
       }
+      .gallery {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 14px;
+        margin-top: 10px;
+      }
+      .gallery-item {
+        margin: 0;
+        border-radius: 12px;
+        overflow: hidden;
+        background: #f3f4f6;
+        border: 1px solid #e5e7eb;
+      }
+      .gallery img {
+        width: 100%;
+        height: 180px;
+        object-fit: cover;
+        display: block;
+        background: #e5e7eb;
+      }
+      .gallery figcaption {
+        padding: 10px;
+        font-size: 0.9rem;
+        color: var(--muted);
+      }
     </style>
   </head>
   <body>
     <main class="wrap">
       <section class="card">
-       <script src="./support-widget.js"></script>
         <h1>Blend Tool for Affinity</h1>
         <p>
           Open-source utility for Affinity workflows. If this tool helps your process,
@@ -67,6 +92,27 @@
         <div class="actions">
           <a class="btn btn-primary" href="https://www.buymeacoffee.com/S1m0nP" target="_blank" rel="noopener noreferrer">Support the project</a>
           <a class="btn btn-secondary" href="https://github.com/S1m0nP1/Blend-Tool-for-Affinity" target="_blank" rel="noopener noreferrer">View on GitHub</a>
+        </div>
+
+        <h2>Gallery</h2>
+        <p>Drop your screenshots into the <code>images/</code> folder and keep these filenames, or edit paths below.</p>
+        <div class="gallery">
+          <figure class="gallery-item">
+            <img src="./images/showcase-1.jpg" alt="Blend Tool screenshot 1" loading="lazy" />
+            <figcaption>Workflow preview 1</figcaption>
+          </figure>
+          <figure class="gallery-item">
+            <img src="./images/showcase-2.jpg" alt="Blend Tool screenshot 2" loading="lazy" />
+            <figcaption>Workflow preview 2</figcaption>
+          </figure>
+          <figure class="gallery-item">
+            <img src="./images/showcase-3.jpg" alt="Blend Tool screenshot 3" loading="lazy" />
+            <figcaption>Workflow preview 3</figcaption>
+          </figure>
+          <figure class="gallery-item">
+            <img src="./images/showcase-4.jpg" alt="Blend Tool screenshot 4" loading="lazy" />
+            <figcaption>Workflow preview 4</figcaption>
+          </figure>
         </div>
       </section>
     </main>
