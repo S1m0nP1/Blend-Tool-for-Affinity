@@ -67,7 +67,7 @@
         min-height: 100vh;
         scroll-snap-align: start;
         overflow: hidden;
-        cursor: zoom-in;
+        cursor: zoom-out;
       }
 
       .slide img {
@@ -111,7 +111,7 @@
 
       .lightbox.open {
         display: grid;
-        cursor: zoom-out;
+        cursor: zoom-in;
       }
 
       .lightbox img {
@@ -120,19 +120,6 @@
         width: auto;
         height: auto;
         object-fit: contain;
-      }
-
-      .lightbox-close {
-        position: fixed;
-        top: 16px;
-        right: 16px;
-        border: 1px solid rgba(255, 255, 255, 0.35);
-        background: rgba(0, 0, 0, 0.45);
-        color: #fff;
-        border-radius: 999px;
-        padding: 8px 12px;
-        font-size: 0.9rem;
-        cursor: pointer;
       }
     </style>
   </head>
@@ -154,7 +141,6 @@
     </main>
 
     <div class="lightbox" id="lightbox" aria-hidden="true">
-      <button class="lightbox-close" id="lightboxClose" type="button">Close</button>
       <img id="lightboxImage" alt="Full image preview" />
     </div>
 
@@ -163,7 +149,6 @@
         var slides = document.querySelectorAll('.slide img');
         var lightbox = document.getElementById('lightbox');
         var lightboxImage = document.getElementById('lightboxImage');
-        var lightboxClose = document.getElementById('lightboxClose');
 
         function openLightbox(src, alt) {
           lightboxImage.src = src;
@@ -186,10 +171,7 @@
           });
         });
 
-        lightboxClose.addEventListener('click', closeLightbox);
-        lightbox.addEventListener('click', function (event) {
-          if (event.target === lightbox) closeLightbox();
-        });
+        lightbox.addEventListener('click', closeLightbox);
 
         document.addEventListener('keydown', function (event) {
           if (event.key === 'Escape' && lightbox.classList.contains('open')) {
