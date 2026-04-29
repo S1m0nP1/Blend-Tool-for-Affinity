@@ -614,3 +614,20 @@ The Blend Tool is all about **smooth transitions** — between colours, shapes, 
 <img width="2481" height="3508" alt="twist blend" src="https://github.com/user-attachments/assets/47986cba-c46c-47fb-b88b-804c562e8c75" />
 
 
+
+## Optional Support Button (JavaScript)
+
+You can show a small non-blocking support button in any web page:
+
+1. Copy `support-widget.js` into your site assets.
+2. Update the `SUPPORT_URL` inside the file.
+3. Load it before `</body>`:
+
+```html
+<script src="/path/to/support-widget.js"></script>
+```
+
+Behavior:
+- Shows a floating "Support this project" button.
+- Includes a "Not now" dismiss action.
+- If dismissed, hides for 14 days via `localStorage`.
