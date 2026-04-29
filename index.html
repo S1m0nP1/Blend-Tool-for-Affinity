@@ -3,112 +3,117 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Blend Tool for Affinity</title>
+    <title>Blend Tool for Affinity Gallery</title>
     <style>
       :root {
-        --bg: #f7fafc;
-        --text: #111827;
-        --muted: #4b5563;
-        --card: #ffffff;
-        --accent: #0f766e;
+        --text: #f9fafb;
+        --overlay: rgba(0, 0, 0, 0.35);
+        --panel: rgba(17, 24, 39, 0.6);
       }
-      * { box-sizing: border-box; }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
       body {
         margin: 0;
-        font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
-        background: radial-gradient(circle at top right, #dff7f3 0%, var(--bg) 45%);
+        padding: 0;
+        height: 100%;
+        background: #0b1020;
         color: var(--text);
+        font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
       }
-      .wrap {
-        max-width: 980px;
-        margin: 48px auto;
-        padding: 0 20px;
-      }
-      .card {
-        background: var(--card);
-        border-radius: 16px;
-        padding: 28px;
-        box-shadow: 0 12px 30px rgba(17, 24, 39, 0.08);
-      }
-      h1 { margin-top: 0; font-size: 2rem; }
-      h2 { margin: 36px 0 14px; font-size: 1.4rem; }
-      p { line-height: 1.65; color: var(--muted); }
-      .actions {
+
+      .hero {
+        position: fixed;
+        top: 16px;
+        left: 16px;
+        right: 16px;
+        z-index: 20;
         display: flex;
+        justify-content: space-between;
+        align-items: center;
         gap: 12px;
         flex-wrap: wrap;
-        margin-top: 20px;
-      }
-      .btn {
-        display: inline-block;
-        text-decoration: none;
         padding: 10px 14px;
-        border-radius: 10px;
-        font-weight: 600;
-      }
-      .btn-primary {
-        background: var(--accent);
-        color: #fff;
-      }
-      .btn-secondary {
-        border: 1px solid #d1d5db;
-        color: var(--text);
-      }
-      .gallery {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-        gap: 14px;
-        margin-top: 10px;
-      }
-      .gallery-item {
-        margin: 0;
         border-radius: 12px;
-        overflow: hidden;
-        background: #f3f4f6;
-        border: 1px solid #e5e7eb;
+        background: var(--panel);
+        backdrop-filter: blur(8px);
       }
-      .gallery img {
+
+      .hero h1 {
+        margin: 0;
+        font-size: 1rem;
+        letter-spacing: 0.02em;
+      }
+
+      .hero a {
+        color: #ffffff;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 0.92rem;
+        border: 1px solid rgba(255, 255, 255, 0.35);
+        border-radius: 999px;
+        padding: 7px 12px;
+      }
+
+      .gallery {
+        scroll-snap-type: y mandatory;
+      }
+
+      .slide {
+        position: relative;
+        min-height: 100vh;
+        scroll-snap-align: start;
+        overflow: hidden;
+      }
+
+      .slide img {
         width: 100%;
-        height: 180px;
+        height: 100vh;
         object-fit: cover;
         display: block;
-        background: #e5e7eb;
       }
-      .gallery figcaption {
-        padding: 10px;
-        font-size: 0.9rem;
-        color: var(--muted);
+
+      .slide::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to top, var(--overlay) 10%, transparent 45%);
+        pointer-events: none;
+      }
+
+      .caption {
+        position: absolute;
+        left: 18px;
+        bottom: 18px;
+        z-index: 5;
+        margin: 0;
+        font-size: 0.95rem;
+        background: rgba(0, 0, 0, 0.45);
+        padding: 8px 12px;
+        border-radius: 10px;
       }
     </style>
   </head>
   <body>
-    <main class="wrap">
-      <section class="card">
-        <h1>Blend Tool for Affinity</h1>
-        <p>
-          Open-source utility for Affinity workflows. If this tool helps your process,
-          you can support development with a small tip. The project stays free and open source.
-        </p>
-        <div class="actions">
-          <a class="btn btn-primary" href="https://www.buymeacoffee.com/S1m0nP" target="_blank" rel="noopener noreferrer">Support the project</a>
-          <a class="btn btn-secondary" href="https://github.com/S1m0nP1/Blend-Tool-for-Affinity" target="_blank" rel="noopener noreferrer">View on GitHub</a>
-        </div>
+    <header class="hero">
+      <h1>Blend Tool for Affinity</h1>
+      <a href="https://github.com/S1m0nP1/Blend-Tool-for-Affinity" target="_blank" rel="noopener noreferrer">View on GitHub</a>
+    </header>
 
-        <h2>Gallery</h2>
-        <p>Drop your screenshots into the <code>images/</code> folder and keep these filenames, or edit paths below.</p>
-        <div class="gallery">
-          <figure class="gallery-item">
-            <img src="./images/showcase-1.png" alt="Blend Tool screenshot 1" loading="lazy" />
-            <figcaption>Workflow preview 1</figcaption>
-          </figure>
-          <figure class="gallery-item">
-            <img src="./images/showcase-2.png" alt="Blend Tool screenshot 2" loading="lazy" />
-            <figcaption>Workflow preview 2</figcaption>
-          </figure>
-          
-        </div>
+    <main class="gallery">
+      <section class="slide">
+        <img src="./images/showcase-1.png" alt="Blend Tool screenshot 1" loading="eager" />
+        <p class="caption">Workflow preview 1</p>
+      </section>
+      <section class="slide">
+        <img src="./images/showcase-2.png" alt="Blend Tool screenshot 2" loading="lazy" />
+        <p class="caption">Workflow preview 2</p>
       </section>
     </main>
+
     <script src="./support-widget.js"></script>
   </body>
 </html>
