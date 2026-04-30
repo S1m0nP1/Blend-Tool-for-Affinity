@@ -3,27 +3,30 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Blend Tool for Affinity Gallery</title>
+    <title>Blend Tool Pro</title>
     <style>
       :root {
         --text: #f9fafb;
+        --muted: #cbd5e1;
         --overlay: rgba(0, 0, 0, 0.35);
-        --panel: rgba(17, 24, 39, 0.6);
+        --panel: rgba(17, 24, 39, 0.72);
+        --panel-solid: #111827;
+        --line: rgba(255, 255, 255, 0.18);
+        --accent: #38bdf8;
       }
 
-      * {
-        box-sizing: border-box;
-      }
+      * { box-sizing: border-box; }
 
-      html,
-      body {
+      html, body {
         margin: 0;
         padding: 0;
-        height: 100%;
+        min-height: 100%;
         background: #0b1020;
         color: var(--text);
         font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
       }
+
+      body { overflow-x: hidden; }
 
       .hero {
         position: fixed;
@@ -40,27 +43,62 @@
         border-radius: 12px;
         background: var(--panel);
         backdrop-filter: blur(8px);
+        border: 1px solid var(--line);
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        flex-wrap: wrap;
       }
 
       .hero h1 {
         margin: 0;
         font-size: 1rem;
         letter-spacing: 0.02em;
+        white-space: nowrap;
+      }
+
+      .tabs {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+      }
+
+      .tab {
+        appearance: none;
+        border: 1px solid rgba(255, 255, 255, 0.28);
+        background: rgba(255, 255, 255, 0.06);
+        color: #fff;
+        border-radius: 999px;
+        padding: 7px 12px;
+        font: inherit;
+        font-size: 0.9rem;
+        font-weight: 650;
+        cursor: pointer;
+      }
+
+      .tab.active {
+        background: #fff;
+        color: #0b1020;
+        border-color: #fff;
       }
 
       .hero a {
         color: #ffffff;
         text-decoration: none;
-        font-weight: 600;
-        font-size: 0.92rem;
+        font-weight: 650;
+        font-size: 0.9rem;
         border: 1px solid rgba(255, 255, 255, 0.35);
         border-radius: 999px;
         padding: 7px 12px;
       }
 
-      .gallery {
-        scroll-snap-type: y mandatory;
-      }
+      .page { display: none; }
+      .page.active { display: block; }
+
+      .gallery { scroll-snap-type: y mandatory; }
 
       .slide {
         position: relative;
@@ -99,6 +137,86 @@
         border-radius: 10px;
       }
 
+      .doc-page {
+        width: min(960px, calc(100vw - 32px));
+        margin: 0 auto;
+        padding: 104px 0 64px;
+      }
+
+      .doc-card {
+        background: rgba(17, 24, 39, 0.82);
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        padding: clamp(20px, 4vw, 42px);
+        box-shadow: 0 24px 80px rgba(0,0,0,0.35);
+      }
+
+      .doc-card h1 {
+        margin-top: 0;
+        font-size: clamp(2rem, 5vw, 3.2rem);
+        line-height: 1.05;
+      }
+
+      .doc-card h2 {
+        margin-top: 2.2rem;
+        padding-top: 1.2rem;
+        border-top: 1px solid var(--line);
+        font-size: 1.45rem;
+      }
+
+      .doc-card h3 {
+        margin-top: 1.5rem;
+        font-size: 1.12rem;
+      }
+
+      .doc-card p, .doc-card li {
+        color: var(--muted);
+        line-height: 1.65;
+        font-size: 1rem;
+      }
+
+      .doc-card strong { color: #fff; }
+      .doc-card code {
+        background: rgba(255,255,255,0.08);
+        padding: 0.12em 0.35em;
+        border-radius: 5px;
+        color: #e0f2fe;
+      }
+
+      .doc-card hr {
+        border: 0;
+        border-top: 1px solid var(--line);
+        margin: 2rem 0;
+      }
+
+      .table-wrap {
+        overflow-x: auto;
+        margin: 1rem 0 1.5rem;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 620px;
+      }
+
+      th, td {
+        padding: 10px 12px;
+        border-bottom: 1px solid var(--line);
+        text-align: left;
+        vertical-align: top;
+      }
+
+      th {
+        color: #fff;
+        background: rgba(255,255,255,0.08);
+      }
+
+      td { color: var(--muted); }
+      tr:last-child td { border-bottom: 0; }
+
       .lightbox {
         position: fixed;
         inset: 0;
@@ -109,10 +227,7 @@
         padding: 20px;
       }
 
-      .lightbox.open {
-        display: grid;
-        cursor: zoom-in;
-      }
+      .lightbox.open { display: grid; cursor: zoom-in; }
 
       .lightbox img {
         max-width: min(96vw, 1600px);
@@ -121,15 +236,28 @@
         height: auto;
         object-fit: contain;
       }
+
+      @media (max-width: 720px) {
+        .hero { position: sticky; top: 0; left: 0; right: 0; border-radius: 0; }
+        .doc-page { padding-top: 24px; }
+      }
     </style>
   </head>
   <body>
     <header class="hero">
-      <h1>Blend Tool for Affinity</h1>
+      <div class="brand">
+        <h1>Blend Tool Pro for Affinity</h1>
+        <nav class="tabs" aria-label="Site pages">
+          <button class="tab active" type="button" data-page="gallery">Gallery</button>
+          <button class="tab" type="button" data-page="comparison">Vs Illustrator</button>
+          <button class="tab" type="button" data-page="guide">User Guide</button>
+        </nav>
+      </div>
       <a href="https://github.com/S1m0nP1/Blend-Tool-for-Affinity" target="_blank" rel="noopener noreferrer">View on GitHub</a>
     </header>
 
-    <main class="gallery">
+    <main id="gallery" class="page gallery active" aria-labelledby="gallery-tab">
+      
       <section class="slide">
         <img src="./images/showcase-1.png" alt="Blend Tool screenshot 1" loading="eager" />
         <p class="caption">Workflow preview 1</p>
@@ -138,6 +266,181 @@
         <img src="./images/showcase-2.png" alt="Blend Tool screenshot 2" loading="lazy" />
         <p class="caption">Workflow preview 2</p>
       </section>
+    
+    </main>
+
+    <main id="comparison" class="page doc-page" aria-labelledby="comparison-tab">
+      <article class="doc-card">
+        <h1>Blend Tool Pro vs Adobe Illustrator — A Comparison Guide</h1>
+<p>Blend Tool Pro is a script for <strong>Affinity V3.2</strong> by S1m0np1. Adobe Illustrator has its own built-in Blend Tool. Both create intermediate steps between two shapes, but the feature sets diverge significantly. This guide covers every area where v16.6.3 offers something Illustrator does not.</p>
+<hr />
+<h2>1. Twist</h2>
+<p><strong>Illustrator:</strong> No twist option. If you want shapes to rotate across a blend, you have to manually rotate each intermediate step after expanding the blend — a tedious process that is also destructive.</p>
+<p><strong>Blend Tool Pro:</strong> A dedicated <strong>Twist (°)</strong> control rotates each step progressively from Shape A to Shape B. The full rotation range is −3600° to +3600°, allowing multiple full spins. A <strong>Reverse Twist</strong> checkbox flips the rotation direction without reconfiguring anything else.</p>
+<hr />
+<h2>2. Easing</h2>
+<p><strong>Illustrator:</strong> Step distribution is always linear — <em>Specified Steps</em> places shapes at equal intervals, and <em>Specified Distance</em> uses a fixed gap. There is no way to weight steps toward one end of the blend.</p>
+<p><strong>Blend Tool Pro:</strong> A dedicated <strong>Spacing</strong> section offers four easing modes:</p>
+<div class="table-wrap"><table><thead><tr><th>Mode</th><th>Effect</th></tr></thead><tbody>
+<tr><td>Linear</td><td>Equal spacing (matches Illustrator behaviour)</td></tr>
+<tr><td>Ease In</td><td>Steps cluster near Shape A, spread toward Shape B</td></tr>
+<tr><td>Ease Out</td><td>Steps spread from Shape A, cluster near Shape B</td></tr>
+<tr><td>Ease In+Out</td><td>Steps cluster at both ends, spread in the middle</td></tr>
+</tbody></table></div>
+<p>An <strong>Easing Factor</strong> slider (0.1–10) controls how aggressively the easing is applied. This makes it possible to create organic, naturally-spaced sequences that would require manual repositioning of every step in Illustrator.</p>
+<hr />
+<h2>3. Per-Endpoint Scale</h2>
+<p><strong>Illustrator:</strong> Scaling either shape before blending changes that shape permanently. There is no way to define a scale for each endpoint as part of the blend itself.</p>
+<p><strong>Blend Tool Pro:</strong> Both Shape A and Shape B have a <strong>Scale Shape (%)</strong> control. Setting them to different values causes the blend to smoothly grow or shrink across its steps — independently of the actual document size of either shape. The original shapes remain untouched.</p>
+<hr />
+<h2>4. Scale Blend Center (Bulge/Pinch Effect)</h2>
+<p><strong>Illustrator:</strong> Has no equivalent. To create a blend that swells in the middle, you would need to add a third shape manually at the midpoint, turning a simple two-object blend into a more complex multi-stop setup.</p>
+<p><strong>Blend Tool Pro:</strong> The <strong>Scale Blend Center</strong> section adds a bulge or pinch effect at the midpoint of the blend without requiring an extra shape:</p>
+<ul>
+<li><strong>Scale (%)</strong> — How much to enlarge or shrink steps at the centre of the blend.</li>
+<li><strong>Softness (%)</strong> — How broadly the scaling effect spreads across the blend. Low softness creates a sharp peak; high softness creates a gentle arc.</li>
+</ul>
+<p>This is a unique feature with no parallel in Illustrator.</p>
+<hr />
+<h2>5. Automatic Anchor Point Matching</h2>
+<p><strong>Illustrator:</strong> When blending two closed paths with different anchor counts or rotational starting positions, Illustrator can produce unintended twisting or crossing. The only fix is to manually reorder anchor points using the Direct Selection tool before blending.</p>
+<p><strong>Blend Tool Pro:</strong> The <strong>Align Start Points</strong> option automatically analyses the angular distribution of anchors on both shapes and rotates Shape B&#x27;s anchor order to best match Shape A — minimising unwanted morphing artefacts. It also tries both the forward and reversed winding directions to find the best fit.</p>
+<hr />
+<h2>6. Reverse Path Direction</h2>
+<p><strong>Illustrator:</strong> Reversing path direction requires exiting the blend, selecting a shape, using <em>Object &gt; Path &gt; Reverse Path Direction</em>, then remaking the blend.</p>
+<p><strong>Blend Tool Pro:</strong> A single <strong>Reverse Second Path Direction</strong> checkbox in the dialog handles this without touching the original shapes. It can be combined with <strong>Align Start Points</strong> and <strong>Flip Shapes</strong> to resolve most morphing direction issues without leaving the dialog.</p>
+<hr />
+<h2>7. Colour Interpolation Control</h2>
+<p><strong>Illustrator:</strong> Fill and stroke are always interpolated. You cannot disable this — if you want all steps to share Shape A&#x27;s colour, you must set both shapes to the same colour before blending.</p>
+<p><strong>Blend Tool Pro:</strong> Two independent toggles — <strong>Interpolate Fill</strong> and <strong>Interpolate Stroke</strong> — let you choose exactly what gets blended:</p>
+<ul>
+<li>Turn both off to get a repeating pattern where all steps look identical to Shape A.</li>
+<li>Turn off stroke interpolation only to keep a consistent outline while the fill transitions.</li>
+<li>Turn off fill interpolation only to let stroke weight and colour change while the fill stays fixed.</li>
+</ul>
+<hr />
+<h2>8. Per-Endpoint Fill and Stroke Overrides</h2>
+<p><strong>Illustrator:</strong> The blend reads colours directly from the shapes. To change a blend&#x27;s colours, you must edit the actual shapes.</p>
+<p><strong>Blend Tool Pro:</strong> Each shape has its own <strong>Fill</strong>, <strong>Stroke Colour</strong>, and <strong>Stroke Width</strong> controls directly in the dialog. You can override how each endpoint looks without modifying the original shapes — useful when you want to explore different colour combinations non-destructively during the preview stage.</p>
+<hr />
+<h2>9. Non-Destructive Live Preview</h2>
+<p><strong>Illustrator:</strong> The blend is created immediately when you apply it. To try different step counts or options, you must undo, change settings, and reapply.</p>
+<p><strong>Blend Tool Pro:</strong> A <strong>Preview</strong> button generates a live on-canvas preview. You can update settings and refresh the preview as many times as you like. The preview is automatically undone if you close the dialog without committing — nothing is left in the document until you click <strong>Apply</strong>.</p>
+<hr />
+<h2>10. Editable Spine with Non-Destructive Re-Stepping</h2>
+<p><strong>Illustrator:</strong> The spine can be replaced with a custom path via <em>Object &gt; Blend &gt; Replace Spine</em>, but this is a one-time operation. If you want to change the step count of a spine-following blend, you must undo and recreate the entire thing.</p>
+<p><strong>Blend Tool Pro:</strong> When <strong>Create Editable Spine</strong> is enabled, a purple guide line is added to the blend container. You can reshape this line freely at any time using Affinity&#x27;s node tools. To reapply:</p>
+<ol>
+<li>Select the blend container.</li>
+<li>Re-run the script.</li>
+<li>Choose <strong>Apply Spine</strong> (repositions existing steps) or <strong>Re-step + Apply</strong> (generates a new step count, then applies the spine).</li>
+</ol>
+<p>This means you can change both the path <em>and</em> the number of steps as many times as you like after the blend has been committed.</p>
+<hr />
+<h2>11. Blend on Path in a Single Operation</h2>
+<p><strong>Illustrator:</strong> Blend on Path is a two-step process — create the blend, then separately replace its spine using <em>Object &gt; Blend &gt; Replace Spine</em>. The original shapes remain in the document and must be managed manually.</p>
+<p><strong>Blend Tool Pro:</strong> Select two shapes and a path simultaneously, then run the script. The blend is placed along the path in a single operation. The path is automatically hidden and renamed to <code>Path Spine: …</code> so it stays accessible but doesn&#x27;t clutter the canvas. The script also auto-detects which shape is closer to the start of the path and sets it as the first endpoint — removing the guesswork.</p>
+<hr />
+<h2>12. Group Blending</h2>
+<p><strong>Illustrator:</strong> Can blend two groups, but treats each group as a single object — the sub-shapes inside are not blended individually. Complex multi-part shapes (e.g. a letter made of two curves) cannot be morphed glyph-by-glyph.</p>
+<p><strong>Blend Tool Pro:</strong> When both selections are groups, the script extracts each child shape individually and blends them in matched pairs. Each intermediate step is itself a sub-container of interpolated glyphs, meaning multi-part shapes morph correctly part-by-part. Fill and stroke are interpolated per glyph.</p>
+<hr />
+<h2>13. Stacking Order Control</h2>
+<p><strong>Illustrator:</strong> The stacking order within a blend is determined by the layer order of the original shapes. To change it you must reorder layers before blending.</p>
+<p><strong>Blend Tool Pro:</strong> A <strong>Stacking Order</strong> control in the dialog lets you choose whether Shape B or Shape A sits on top of the layer stack inside the blend container — without touching the original layer order.</p>
+<hr />
+<h2>Summary Table</h2>
+<div class="table-wrap"><table><thead><tr><th>Feature</th><th>Illustrator</th><th>Blend Tool Pro</th></tr></thead><tbody>
+<tr><td>Twist across steps</td><td>✗</td><td>✓</td></tr>
+<tr><td>Easing (ease in/out)</td><td>✗</td><td>✓</td></tr>
+<tr><td>Per-endpoint scale</td><td>✗</td><td>✓</td></tr>
+<tr><td>Scale blend center / bulge</td><td>✗</td><td>✓</td></tr>
+<tr><td>Auto anchor matching</td><td>✗</td><td>✓</td></tr>
+<tr><td>Reverse path direction (in dialog)</td><td>✗</td><td>✓</td></tr>
+<tr><td>Toggle fill interpolation</td><td>✗</td><td>✓</td></tr>
+<tr><td>Toggle stroke interpolation</td><td>✗</td><td>✓</td></tr>
+<tr><td>Per-endpoint fill/stroke override</td><td>✗</td><td>✓</td></tr>
+<tr><td>Live non-destructive preview</td><td>✗</td><td>✓</td></tr>
+<tr><td>Editable spine with re-stepping</td><td>✗</td><td>✓</td></tr>
+<tr><td>Blend on Path in one step</td><td>✗</td><td>✓</td></tr>
+<tr><td>Group blending (glyph-by-glyph)</td><td>✗</td><td>✓</td></tr>
+<tr><td>Stacking order control</td><td>✗</td><td>✓</td></tr>
+<tr><td>Smooth colour mode</td><td>✓</td><td>✓ (always on)</td></tr>
+<tr><td>Specified steps</td><td>✓</td><td>✓</td></tr>
+<tr><td>Specified distance</td><td>✓</td><td>✗</td></tr>
+<tr><td>Expand blend</td><td>✓</td><td>✗ (use Affinity&#x27;s tools)</td></tr>
+<tr><td>Release blend</td><td>✓</td><td>✗ (use Undo)</td></tr>
+</tbody></table></div>
+<hr />
+<h2>When Illustrator Still Has an Edge</h2>
+<p>Illustrator&#x27;s Blend Tool is built into the application and has a few conveniences the script does not replicate:</p>
+<ul>
+<li><strong>Specified Distance</strong> — placing steps at a fixed physical distance apart, rather than by count.</li>
+<li><strong>Expand</strong> — converting a live blend into individual editable objects while keeping them on the canvas.</li>
+<li><strong>Release</strong> — returning a blend to its original two objects after the fact.</li>
+</ul>
+<p>For the majority of creative blending tasks, however — especially anything involving animation-style morphing, path-following, scaling effects, or large step counts — Blend Tool Pro offers more control and a more forgiving, non-destructive workflow.</p>
+      </article>
+    </main>
+
+    <main id="guide" class="page doc-page" aria-labelledby="guide-tab">
+      <article class="doc-card">
+        <h1>Blend Tool Pro User Guide</h1>
+<p>Blend Tool Pro is an Affinity script that creates smooth blends between two selected vector shapes.</p>
+<p>It can generate intermediate shapes between Shape A and Shape B, with controls for colour, stroke, scale, spacing, stacking order, twist, and path direction.</p>
+<hr />
+<h2>Basic workflow</h2>
+<ol>
+<li>Select two vector shapes in Affinity.</li>
+<li>Run Blend Tool Pro.</li>
+<li>Choose the number of Steps.</li>
+<li>Use Preview to test the result.</li>
+<li>Use Apply when the blend looks right.</li>
+<li>Press OK to confirm.</li>
+</ol>
+<hr />
+<h2>Preview and Apply</h2>
+<p>Preview creates a temporary version of the blend. If you cancel the dialog, the preview is undone.</p>
+<p>Apply commits the blend to the document.</p>
+<hr />
+<h2>Main controls</h2>
+<h3>Steps</h3>
+<p>Controls how many intermediate shapes are created. More steps create a smoother blend, but also create more objects.</p>
+<h3>Shape A and Shape B</h3>
+<p>Shape A is the starting shape. Shape B is the ending shape.</p>
+<p>Each shape can have its own fill, stroke, stroke width, and scale settings.</p>
+<h3>Twist</h3>
+<p>Rotates the intermediate shapes across the blend. Use it for spiral, turning, or motion-style effects.</p>
+<h3>Distribution</h3>
+<p>Controls how the blend is spaced and scaled through the middle.</p>
+<p>Center changes the scale near the middle of the blend. Softness controls how gradually that centre effect fades in and out. Easing controls how the steps are distributed between Shape A and Shape B.</p>
+<h3>Colour</h3>
+<p>Interpolate fill blends the fill colour from Shape A to Shape B.</p>
+<p>Interpolate stroke blends the stroke colour from Shape A to Shape B.</p>
+<h3>Stack</h3>
+<p>Controls whether Shape A or Shape B appears visually on top inside the blend.</p>
+<hr />
+<h2>Editing an existing blend</h2>
+<p>Select the blend container and run Blend Tool Pro again.</p>
+<p>You can preview changes, apply changes, or change the number of steps. Changing the number of steps is called re-stepping.</p>
+<hr />
+<h2>Common uses</h2>
+<ul>
+<li>Smooth shape transitions</li>
+<li>Stepped colour gradients</li>
+<li>Repeating design elements</li>
+<li>Stroke and line effects</li>
+<li>Motion graphics-style trails</li>
+<li>Spiral or twist effects</li>
+<li>Decorative vector patterns</li>
+</ul>
+<hr />
+<h2>Tips</h2>
+<p>Start with a small number of steps while testing.</p>
+<p>If the blend looks twisted, try Align start points, Reverse path, or Flip shapes.</p>
+<p>If objects overlap in the wrong order, change the Stack setting.</p>
+<p>Use Advanced controls when you need more precision.</p>
+      </article>
     </main>
 
     <div class="lightbox" id="lightbox" aria-hidden="true">
@@ -146,9 +449,34 @@
 
     <script>
       (function () {
+        var tabs = document.querySelectorAll('.tab');
+        var pages = document.querySelectorAll('.page');
         var slides = document.querySelectorAll('.slide img');
         var lightbox = document.getElementById('lightbox');
         var lightboxImage = document.getElementById('lightboxImage');
+
+        function setPage(pageId) {
+          pages.forEach(function (page) {
+            page.classList.toggle('active', page.id === pageId);
+          });
+          tabs.forEach(function (tab) {
+            tab.classList.toggle('active', tab.getAttribute('data-page') === pageId);
+          });
+          if (location.hash !== '#' + pageId) {
+            history.replaceState(null, '', '#' + pageId);
+          }
+          window.scrollTo(0, 0);
+        }
+
+        tabs.forEach(function (tab) {
+          tab.addEventListener('click', function () {
+            setPage(tab.getAttribute('data-page'));
+          });
+        });
+
+        var initialPage = (location.hash || '#gallery').replace('#', '');
+        if (!document.getElementById(initialPage)) initialPage = 'gallery';
+        setPage(initialPage);
 
         function openLightbox(src, alt) {
           lightboxImage.src = src;
