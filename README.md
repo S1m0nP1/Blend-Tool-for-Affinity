@@ -1,4 +1,4 @@
-# Blend Tool v16.6.3 — User Guide
+# Blend Tool v2 — User Guide
 
 ## Support This Project
 
@@ -17,9 +17,9 @@ The Blend Tool is a script that generates smooth morphing transitions between tw
 
 ---
 
-## What's New in v16.6.3
+## What's New in v23
 
-Two bugs from v16.6.2 have been fixed:
+Two bugs from v1 have been fixed:
 
 - **Flip shapes without a path** — Previously, flipping swapped shapes to each other's document position instead of just reversing the morph direction. This is now corrected: flip only swaps the *appearance*, never the *position*.
 - **Misplaced steps on high-count curve blends** — With many steps (e.g. 600), shapes near bezier segment boundaries could be placed wildly out of position. This is now fixed with a more accurate arc-length sampling method.
