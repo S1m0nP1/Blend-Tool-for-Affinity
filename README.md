@@ -121,7 +121,7 @@ Illustrator's Blend Tool is built into the application and has a few convenience
 For the majority of creative blending tasks, however — especially anything involving animation-style morphing, path-following, scaling effects, or large step counts — Blend Tool Pro offers more control and a more forgiving, non-destructive workflow.
 
 
-# Blend Tool v2 — User Guide
+# Blend Tool Pro — User Guide
 
 ## Support This Project
 
@@ -138,16 +138,6 @@ This tool stays free and open source. Support is optional.
 
 The Blend Tool is a script that generates smooth morphing transitions between two shapes or groups — interpolating their position, form, fill, stroke, and scale across a configurable number of intermediate steps. Results can optionally follow a custom path and be edited non-destructively after creation.
 
----
-
-## What's New in v23
-
-Two bugs from v1 have been fixed:
-
-- **Flip shapes without a path** — Previously, flipping swapped shapes to each other's document position instead of just reversing the morph direction. This is now corrected: flip only swaps the *appearance*, never the *position*.
-- **Misplaced steps on high-count curve blends** — With many steps (e.g. 600), shapes near bezier segment boundaries could be placed wildly out of position. This is now fixed with a more accurate arc-length sampling method.
-
----
 
 ## Before You Start
 
@@ -160,7 +150,7 @@ The script works on two kinds of object:
 
 Both objects must be the **same type** — two vectors or two groups. You cannot mix them.
 
----
+
 
 ## How to Run the Script
 
